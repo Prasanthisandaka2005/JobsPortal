@@ -1,0 +1,15 @@
+.filter {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+hr {
+  margin-bottom: 1rem;
+}

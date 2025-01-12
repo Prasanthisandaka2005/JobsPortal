@@ -1,0 +1,16 @@
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 3rem;
+  align-items: center;
+  background-color: #272727;
+}
+.logo {
+  width: 105px;
+}
+.links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 600;
+}

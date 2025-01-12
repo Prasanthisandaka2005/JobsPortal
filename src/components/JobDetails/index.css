@@ -1,0 +1,38 @@
+.similarJob {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: #202020;
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 1rem;
+}
+.skillLogo {
+  width: 40px;
+}
+.details {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 5rem;
+  gap: 2rem;
+  padding: 1.5rem;
+  background-color: #272727;
+  border-radius: 10px;
+}
+.jobD {
+  display: flex;
+  flex-direction: column;
+  background-color: #272727;
+  border-radius: 10px;
+  gap: 1rem;
+  width: 100%;
+}
+.flexSb {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  gap: 4rem;
+}
+.lifeImg {
+  border-radius: 5px;
+}

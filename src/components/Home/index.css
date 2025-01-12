@@ -1,0 +1,20 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  height: 90vh;
+  gap: 0.5rem;
+  background-image: url('https://assets.ccbp.in/frontend/react-js/home-lg-bg.png');
+  background-size: cover;
+}
+.lefthome {
+  display: flex;
+  flex-direction: column;
+  padding: 3rem;
+  gap: 2rem;
+  width: 50%;
+}
+.homeH {
+  font-size: 70px;
+  margin: 0;
+}

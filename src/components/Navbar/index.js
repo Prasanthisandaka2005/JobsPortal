@@ -1,12 +1,14 @@
 import {Link, withRouter} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import './index.css'
+import {toast} from 'react-toastify'
 
 const Navbar = props => {
   const onLogout = () => {
     Cookies.remove('jwt_token')
     const {history} = props
     history.replace('/login')
+    toast.success('Logged Out Successfully', {position: 'top-center'})
   }
   return (
     <div className="navContainer">

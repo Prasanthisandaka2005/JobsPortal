@@ -1,13 +1,16 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
-import {Redirect} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import './index.css'
+import {signInWithEmailAndPassword} from 'firebase/auth'
+import {toast} from 'react-toastify'
+import {auth} from '../Firebase'
 
 class Login extends Component {
-  state = {username: '', password: '', errMsg: ''}
+  state = {email: '', password: '', errMsg: ''}
 
-  onChangeUsername = e => {
-    this.setState({username: e.target.value})
+  onChangeemail = e => {
+    this.setState({email: e.target.value})
   }
 
   onChangePassword = e => {
@@ -20,34 +23,31 @@ class Login extends Component {
     history.replace('/')
   }
 
-  onFailure = data => {
-    this.setState({errMsg: data.error_msg})
-  }
-
   onSubmitForm = async e => {
     e.preventDefault()
-    const {username, password} = this.state
-    const userdetails = {username, password}
-    const url = 'https://apis.ccbp.in/login'
-    const options = {
-      method: 'POST',
-      body: JSON.stringify(userdetails),
-    }
-    const response = await fetch(url, options)
-    const data = await response.json()
-    if (response.ok) {
-      this.onSuccess(data.jwt_token)
-    } else {
-      this.onFailure(data)
+    try {
+      const {email, password} = this.state
+      await signInWithEmailAndPassword(auth, email, password)
+      toast.success('User Logged In Successfully', {position: 'top-center'})
+      this.setState({email: '', password: ''})
+      const userdetails = {username: 'rahul', password: 'rahul@2021'}
+      const url = 'https://apis.ccbp.in/login'
+      const options = {
+        method: 'POST',
+        body: JSON.stringify(userdetails),
+      }
+      const response = await fetch(url, options)
+      const data = await response.json()
+      if (response.ok) {
+        this.onSuccess(data.jwt_token)
+      }
+    } catch (error) {
+      toast.error(error.message, {position: 'bottom-center'})
     }
   }
 
   render() {
-    const {errMsg, password, username} = this.state
-    const jwtToken = Cookies.get('jwt_token')
-    if (jwtToken !== undefined) {
-      return <Redirect to="/" />
-    }
+    const {errMsg, password, email} = this.state
     return (
       <div className="main">
         <div className="loginContainer">
@@ -58,22 +58,22 @@ class Login extends Component {
           />
           <form onSubmit={this.onSubmitForm} className="form">
             <div className="inputContainer">
-              <label htmlFor="username">USERNAME</label>
+              <label htmlFor="email">Email</label>
               <input
                 type="text"
-                placeholder="Username"
-                id="username"
+                placeholder="Enter Email ID"
+                id="email"
                 className="input"
-                value={username}
-                onChange={this.onChangeUsername}
+                value={email}
+                onChange={this.onChangeemail}
               />
             </div>
             <div className="inputContainer">
-              <label htmlFor="password">PASSWORD</label>
+              <label htmlFor="password">Password</label>
               <input
                 type="password"
                 id="password"
-                placeholder="Password"
+                placeholder="Enter Password"
                 value={password}
                 className="input"
                 onChange={this.onChangePassword}
@@ -82,6 +82,13 @@ class Login extends Component {
             <button type="submit">Login</button>
             {errMsg && <p className="err">*{errMsg}</p>}
           </form>
+          <div>
+            Do no have an account
+            <Link to="/signup" className="a">
+              {' '}
+              SignUp
+            </Link>
+          </div>
         </div>
       </div>
     )

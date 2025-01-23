@@ -2,6 +2,8 @@ import {Component} from 'react'
 import Cookies from 'js-cookie'
 import Loader from 'react-loader-spinner'
 import './index.css'
+import {doc, getDoc} from 'firebase/firestore'
+import {auth, db} from '../Firebase'
 
 const apiStatusConstants = {
   sucess: 'SUCCESS',
@@ -17,6 +19,15 @@ class ProfileData extends Component {
   }
 
   getProfileData = async () => {
+    auth.onAuthStateChanged(async user => {
+      console.log(user)
+      const docRef = doc(db, 'Users', user.uid)
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+        this.setState({profileData: docSnap.data()})
+        console.log(docSnap.data())
+      }
+    })
     const jwtToken = Cookies.get('jwt_token')
     const url = 'https://apis.ccbp.in/profile'
     const options = {
@@ -44,9 +55,12 @@ class ProfileData extends Component {
       case apiStatusConstants.sucess:
         return (
           <div className="profile">
-            <img src={profileData.profile_image_url} alt="profile" />
-            <h1 className="h1">{profileData.name}</h1>
-            <p className="p">{profileData.short_bio}</p>
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-profile-img.png"
+              alt="profile"
+            />
+            <h1 className="h1">{profileData.username}</h1>
+            <p className="p">{profileData.email}</p>
           </div>
         )
       case apiStatusConstants.failure:
@@ -60,7 +74,7 @@ class ProfileData extends Component {
       case apiStatusConstants.in_progress:
         return (
           <div className="loader-container" data-testid="loader">
-            <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
+            <Loader type="ThreeDots" color="black" height="50" width="50" />
           </div>
         )
       default:

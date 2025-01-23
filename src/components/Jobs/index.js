@@ -16,7 +16,7 @@ class Jobs extends Component {
   state = {
     apiStatus: apiStatusConstants.in_progress,
     employmenType: [],
-    minimumPackage: [],
+    minimumPackage: '',
     searchQuery: '',
     jobsList: [],
   }
@@ -29,8 +29,8 @@ class Jobs extends Component {
     const jwtToken = Cookies.get('jwt_token')
     const {employmenType, minimumPackage, searchQuery} = this.state
     const employment = employmenType.join(',')
-    const minPack = minimumPackage.join(',')
-    const url = `https://apis.ccbp.in/jobs?employment_type=${employment}&minimum_package=${minPack}&search=${searchQuery}`
+    const url = `https://apis.ccbp.in/jobs?employment_type=${employment}&minimum_package=${minimumPackage}&search=${searchQuery}`
+    console.log(url)
     const options = {
       method: 'GET',
       headers: {
@@ -114,11 +114,9 @@ class Jobs extends Component {
   onFilterSalary = e => {
     const {value} = e.target
     this.setState(
-      prevState => ({
-        minimumPackage: prevState.minimumPackage.includes(value)
-          ? prevState.minimumPackage.filter(item => item !== value)
-          : [...prevState.minimumPackage, value],
-      }),
+      {
+        minimumPackage: value,
+      },
       this.getJobs,
     )
   }
